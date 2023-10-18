@@ -21,6 +21,7 @@ const MyPostsPage = () => {
   const [userPost, setUserPost] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -78,30 +79,33 @@ const MyPostsPage = () => {
     }
   }, []);
 
-  const handleOk = useCallback(async () => {
+  const handleOk = async () => {
     try {
-      if (photoId !== null) {
-        let values = await form.validateFields();
-        let res = await request.post("post", {
+      let values = await form.validateFields();
+      if (selected === null) {
+        await request.post("post", {
           ...values,
           photo: photoId,
         });
       } else {
-        console.log("Id is not found yet");
+        await request.put(`post/${selected}`, values);
       }
+      // getUserPost();
+      setIsModalOpen(false);
     } catch (err) {
       toast.error(err.response.data);
     }
     setIsModalOpen(false);
-  }, [form, photoId]);
+  };
 
-  const showModal = () => {
+  const showModal = useCallback(() => {
     form.resetFields();
     setIsModalOpen(true);
-  };
+  }, [form]);
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setSelected(null);
   };
 
   const handleChange = (value) => {
@@ -120,6 +124,20 @@ const MyPostsPage = () => {
       toast.error(err);
     }
   };
+
+  const editPost = async (id) => {
+    console.log(id);
+    try {
+      showModal(true);
+      setSelected(id);
+      let { data } = await request.get(`post/${id}`);
+      form.setFieldsValue(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log(selected);
 
   return (
     <Fragment>
@@ -166,7 +184,12 @@ const MyPostsPage = () => {
                     <p className="post-subtitle">{post?.category.name}</p>
                     <h3 className="post-title">{post?.title}</h3>
                     <p className="post-desc">{post?.description}</p>
-                    <button className="edit-btn">Edit</button>
+                    <button
+                      onClick={() => editPost(post?._id)}
+                      className="edit-btn"
+                    >
+                      Edit
+                    </button>
                     <button
                       onClick={() => deletePost(post?._id)}
                       className="delete-btn"
@@ -179,10 +202,10 @@ const MyPostsPage = () => {
             </div>
 
             <Modal
-              title="Create your post"
+              title={selected === null ? "Create your post" : "Edit your post"}
               open={isModalOpen}
               onOk={handleOk}
-              okText="Add post"
+              okText={selected === null ? `Add post` : "Save post"}
               onCancel={handleCancel}
             >
               <Form
