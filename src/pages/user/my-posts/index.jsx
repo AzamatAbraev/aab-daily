@@ -88,9 +88,8 @@ const MyPostsPage = () => {
           photo: photoId,
         });
       } else {
-        await request.put(`post/${selected}`, values);
+        await request.put(`post/${selected}`, {...values, photo: photoId});
       }
-      // getUserPost();
       setIsModalOpen(false);
     } catch (err) {
       toast.error(err.response.data);
@@ -273,7 +272,7 @@ const MyPostsPage = () => {
                   <Upload
                     name="avatar"
                     className="avatar-uploader"
-                    showUploadList={false}
+                    showUploadList={true}
                     onChange={uploadPhoto}
                   >
                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
