@@ -2,14 +2,14 @@ import { Fragment, useCallback, useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../../context/AuthContext";
 import Loader from "../../../utils/Loader";
+import { UploadOutlined } from "@ant-design/icons";
 
 import "./style.scss";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import request from "../../../server";
 import { ENDPOINT } from "../../../constants";
-import { Form, Input, Modal, Select, Upload } from "antd";
-import { useDebugValue } from "react";
+import { Button, Form, Input, Modal, Select, Upload } from "antd";
 
 const MyPostsPage = () => {
   const { loading, setLoading } = useContext(AuthContext);
@@ -43,6 +43,15 @@ const MyPostsPage = () => {
     }
   }, [search]);
 
+  const getCategories = useCallback(async () => {
+    try {
+      let { data } = await request.get("category");
+      setCategories(data?.data);
+    } catch (err) {
+      toast.error(err.response.data);
+    }
+  }, []);
+
   useEffect(() => {
     let options;
     options = categories?.map((category) => {
@@ -53,32 +62,38 @@ const MyPostsPage = () => {
     });
     setSortedCategories(options);
 
-    const getCategories = async () => {
-      try {
-        let { data } = await request.get("category");
-        setCategories(data?.data);
-      } catch (err) {
-        toast.error(err.response.data);
-      }
-    };
-
     getCategories();
     getUserPost();
-  }, [categories, getUserPost]);
+  }, [categories, getUserPost, getCategories]);
 
-  const handleOk = async () => {
+  const uploadPhoto = useCallback(async (e) => {
     try {
-      let values = await form.validateFields();
-      let res = await request.post("post", {
-        ...values,
-        photo: photoId,
-      });
-      console.log(res);
+      let formData = new FormData();
+      formData.append("file", e.file.originFileObj);
+      console.log(e.file.originFileObj);
+      let { data } = await request.post("upload", formData);
+      setPhotoId(data?._id);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  }, []);
+
+  const handleOk = useCallback(async () => {
+    try {
+      if (photoId !== null) {
+        let values = await form.validateFields();
+        let res = await request.post("post", {
+          ...values,
+          photo: photoId,
+        });
+      } else {
+        console.log("Id is not found yet");
+      }
     } catch (err) {
       toast.error(err.response.data);
     }
     setIsModalOpen(false);
-  };
+  }, [form, photoId]);
 
   const showModal = () => {
     form.resetFields();
@@ -94,25 +109,13 @@ const MyPostsPage = () => {
     setCategory(value);
   };
 
-  const uploadPhoto = async (e) => {
-    try {
-      let formData = new FormData();
-      formData.append("file", e.file.originFileObj);
-      console.log(e.file.originFileObj);
-      let response = await request.post("auth/upload", formData);
-      setPhotoId(response?.data.split(".")[0].split("_")[1]);
-    } catch (err) {
-      console.log(err.response.data);
-    }
-  };
-
   useEffect(() => {
     deletePost();
   }, []);
 
-  const deletePost = async (id) => {
+  const deletePost = (id) => {
     try {
-      await request.delete(`post/${id}`);
+      request.delete(`post/${id}`);
     } catch (err) {
       toast.error(err);
     }
@@ -250,7 +253,7 @@ const MyPostsPage = () => {
                     showUploadList={false}
                     onChange={uploadPhoto}
                   >
-                    Upload
+                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
                   </Upload>
                 </Form.Item>
               </Form>

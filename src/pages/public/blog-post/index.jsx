@@ -11,7 +11,6 @@ import "./style.scss";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { AuthContext } from "../../../context/AuthContext";
 import Loader from "../../../utils/Loader";
-import homeBackground from "../../../assets/images/home-background.png"
 
 const BlogPostPage = () => {
   const { loading, setLoading } = useContext(AuthContext);
