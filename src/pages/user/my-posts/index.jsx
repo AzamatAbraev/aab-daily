@@ -112,7 +112,10 @@ const MyPostsPage = () => {
 
   const deletePost = async (id) => {
     try {
-      await request.delete(`post/${id}`);
+      let confirmation = confirm("Do you want to delete the post ?");
+      if (confirmation) {
+        await request.delete(`post/${id}`);
+      }
     } catch (err) {
       toast.error(err);
     }
