@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import request from "../../../server";
 import { ENDPOINT } from "../../../constants";
 import { Form, Input, Modal, Select, Upload } from "antd";
+import { useDebugValue } from "react";
 
 const MyPostsPage = () => {
   const { loading, setLoading } = useContext(AuthContext);
@@ -105,9 +106,12 @@ const MyPostsPage = () => {
     }
   };
 
+  useEffect(() => {
+    deletePost();
+  }, []);
+
   const deletePost = async (id) => {
     try {
-      let confirm = confirm("Do you want to delete the post ?");
       await request.delete(`post/${id}`);
     } catch (err) {
       toast.error(err);
