@@ -19,6 +19,7 @@ const MyPostsPage = () => {
   const [sortedCategories, setSortedCategories] = useState([]);
   const [userPost, setUserPost] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -34,12 +35,12 @@ const MyPostsPage = () => {
 
   const getUserPost = useCallback(async () => {
     try {
-      let { data } = await request.get("post/user");
+      let { data } = await request.get(`post/user?search=${search}`);
       setUserPost(data?.data);
     } catch (err) {
       toast.error(err);
     }
-  }, []);
+  }, [search]);
 
   useEffect(() => {
     let options;
@@ -104,9 +105,14 @@ const MyPostsPage = () => {
     }
   };
 
-  console.log();
-
-  console.log(photoId);
+  const deletePost = async (id) => {
+    try {
+      let confirm = confirm("Do you want to delete the post ?");
+      await request.delete(`post/${id}`);
+    } catch (err) {
+      toast.error(err);
+    }
+  };
 
   return (
     <Fragment>
@@ -122,6 +128,8 @@ const MyPostsPage = () => {
               </button>
             </div>
             <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               name="search"
               placeholder="Searching..."
               className="search-input"
@@ -151,6 +159,13 @@ const MyPostsPage = () => {
                     <p className="post-subtitle">{post?.category.name}</p>
                     <h3 className="post-title">{post?.title}</h3>
                     <p className="post-desc">{post?.description}</p>
+                    <button className="edit-btn">Edit</button>
+                    <button
+                      onClick={() => deletePost(post?._id)}
+                      className="delete-btn"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
