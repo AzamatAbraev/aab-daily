@@ -1,0 +1,34 @@
+#all-posts-page .search-input {
+  margin-bottom: 0px;
+}
+
+.line {
+  margin-bottom: 60px;
+}
+
+.all-posts {
+  &__title {
+    color: #232536;
+    font-family: "Sen";
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 64px;
+    letter-spacing: -2px;
+  }
+
+  .line {
+    height: 1px;
+    width: 100%;
+    opacity: 0.32;
+    background: #6d6e76;
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagination {
+    gap: 20px !important;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}

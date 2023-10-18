@@ -1,0 +1,118 @@
+@use "../../../constants/Variables.scss" as vrb;
+
+.home {
+  padding-top: 128px;
+  padding-bottom: 192px;
+
+  &__subtitle {
+    color: vrb.$white;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    span {
+      font-weight: 900;
+    }
+  }
+
+  &__title {
+    color: vrb.$white;
+    font-family: "Sen";
+    font-size: 56px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 64px;
+    letter-spacing: -2px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    width: 60%;
+  }
+
+  &__details {
+    display: flex;
+    gap: 15px;
+    p {
+      color: vrb.$white;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 28px;
+      span {
+        color: vrb.$yellow;
+      }
+    }
+  }
+
+  &__desc {
+    color: vrb.$white;
+    margin-top: 16px;
+    margin-bottom: 48px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    width: 50%;
+  }
+
+  &__posts__btn {
+    color: vrb.$black;
+    font-family: "Sen";
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 14px 44px;
+    background-color: vrb.$yellow;
+    transition: 0.5s;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.blog {
+  padding-top: 94px;
+  padding-bottom: 66px;
+  background-color: vrb.$white;
+
+  &__title {
+    color: #000;
+    font-family: "Sen";
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 48px;
+    letter-spacing: -2px;
+    margin-bottom: 64px;
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    opacity: 0.3;
+    background: #6d6e76;
+  }
+}
+
+.category {
+  padding-top: 70px;
+  padding-bottom: 70px;
+
+  &__title {
+    color: vrb.$black;
+    font-family: 'Sen';
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 48px;
+    letter-spacing: -2px;
+    text-align: center;
+    margin-bottom: 70px;
+  }
+}
+
+@media (max-width: 800px) {
+  .home__title,
+  .home__desc {
+    width: 100%;
+  }
+}

@@ -1,0 +1,81 @@
+@use "../../../constants/Variables.scss" as vrb;
+
+#my-posts {
+  padding-top: vrb.$header-height;
+}
+
+.my-posts {
+  &__title {
+    color: vrb.$black;
+    font-family: "Sen";
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 64px;
+    letter-spacing: -2px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 60px;
+  }
+}
+
+.add-post-btn {
+  padding: 14px 44px;
+  color: vrb.$black;
+  border-radius: 2px;
+  border: none;
+  font-family: "Sen";
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  background: vrb.$yellow;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.nav__menu {
+  margin-bottom: 0px !important;
+}
+
+.line {
+  height: 1px;
+  width: 100%;
+  opacity: 0.32;
+  background: #6d6e76;
+}
+
+.card__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  input {
+    width: 100%;
+  }
+
+  label {
+    font-family: "Sen" !important;
+    width: 100%;
+    color: #232536;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+  }
+}
+
+.ant-modal-title {
+  text-align: center;
+}

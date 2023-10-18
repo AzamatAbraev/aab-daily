@@ -1,0 +1,90 @@
+header {
+  background-color: #232536;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.nav__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+.nav__menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.nav__login__btn {
+  font-family: "Sen";
+  margin-left: 38px;
+  padding: 14px 44px;
+  color: #232536;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  background: #fff;
+  border-radius: 4px;
+  transition: 0.5s;
+}
+.nav__login__btn:hover {
+  opacity: 0.8;
+}
+.nav__link {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  transition: 0.5s ease;
+}
+.nav__link:hover {
+  opacity: 0.8;
+}
+.nav__link.active {
+  color: #FFD050;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+}
+.nav__res__menu {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  background-color: #232536;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+.nav__res__menu .nav__login__btn {
+  margin-left: 0;
+}
+
+.hamburger {
+  display: none;
+}
+.hamburger button {
+  background-color: transparent;
+  border: none;
+}
+
+.nav__logo {
+  font-size: 20px;
+  color: #fff;
+}
+
+@media (max-width: 720px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav__menu {
+    display: none;
+  }
+}

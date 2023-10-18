@@ -1,0 +1,95 @@
+@use "../../../constants/Variables.scss" as vrb;
+
+#login {
+  padding-bottom: 400px;
+}
+
+.login__title {
+  color: #232536;
+  font-family: "Sen";
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 64px;
+  letter-spacing: -2px;
+  padding-top: 40px;
+  padding-bottom: 70px;
+  text-align: center;
+}
+
+.login__form {
+  width: 60%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.login__form input {
+  padding: 20px;
+  width: 100%;
+  color: vrb.$black;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  border-radius: 2px;
+  border: 1px solid rgba(109, 110, 118, 0.5);
+  margin-bottom: 20px;
+}
+
+.login__password {
+  margin-top: 19px;
+}
+
+#register .login__password {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+#register {
+  padding-bottom: 300px;
+}
+
+.login__btn {
+  color: vrb.$black;
+  width: 100%;
+  margin-top: 54px;
+  padding: 20px;
+  font-family: "Sen";
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  background: vrb.$yellow;
+  border: none;
+}
+
+.error-message {
+  color: red;
+  padding-bottom: 20px;
+}
+
+.show-error {
+  opacity: 1;
+}
+
+@media (max-width: 700px) {
+  .login__form {
+    width: 70%;
+  }
+}
+
+@media (max-width: 550px) {
+  .login__form {
+    width: 100%;
+
+    button {
+      padding: 14px;
+    }
+
+    input {
+      padding: 14px;
+    }
+  }
+  .login__title {
+    font-size: 38px;
+    padding-bottom: 40px;
+  }
+}
