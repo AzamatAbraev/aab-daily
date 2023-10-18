@@ -53,6 +53,11 @@ const CategoryPage = () => {
     arr.push(i);
   }
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    setActivePage(1);
+  }
+
   return (
     <Fragment>
       <section id="category" className="home__category">
@@ -76,7 +81,7 @@ const CategoryPage = () => {
           <div className="container all-posts__container">
             <input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={handleSearch}
               className="search-input"
               type="text"
               placeholder="Searching..."

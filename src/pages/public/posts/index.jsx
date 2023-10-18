@@ -59,6 +59,11 @@ const PostsPage = () => {
     arr.push(i);
   }
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    setActivePage(1);
+  }
+
   return (
     <Fragment>
       {loading ? (
@@ -68,7 +73,7 @@ const PostsPage = () => {
           <div className="container all-posts">
             <input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={handleSearch}
               placeholder="Searching..."
               className="search-input"
               type="text"
