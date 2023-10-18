@@ -1,11 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Fragment, useContext, useEffect, useState } from "react";
-import { Form, Input } from "antd";
+import { Fragment, useCallback, useContext, useEffect, useState } from "react";
+import { Button, Form, Input, Upload } from "antd";
+
 import { toast } from "react-toastify";
+import { UploadOutlined } from "@ant-design/icons";
 
 import { AuthContext } from "../../context/AuthContext";
 import Cookies from "js-cookie";
-import { ROLE, TOKEN } from "../../constants";
+import { ENDPOINT, ROLE, TOKEN } from "../../constants";
 import Loader from "../../utils/Loader";
 
 import request from "../../server";
@@ -16,11 +18,12 @@ const AccountPage = () => {
   const { setIsAuthenticated, setRole, setLoading, loading, user, getUser } =
     useContext(AuthContext);
   const navigate = useNavigate();
-
+  const [photoId, setPhotoId] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [file, setFile] = useState();
   const [password, setPassword] = useState(false);
   const [form] = Form.useForm();
+  const [photoExtension, setPhotoExtension] = useState("jpg");
 
   useEffect(() => {
     setLoading(true);
@@ -45,10 +48,27 @@ const AccountPage = () => {
     }
   };
 
+  const uploadPhoto = useCallback(
+    async (e) => {
+      try {
+        setPhotoExtension(e.file.name.split(".")[1]);
+        let formData = new FormData();
+        formData.append("file", e.file.originFileObj);
+        let { data } = await request.post("upload", formData);
+        setPhotoId(data?._id);
+        getUser();
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    },
+    [getUser]
+  );
+
   const onFinish = async (values) => {
-    console.log(values);
     try {
-      await request.put("auth/details", values);
+      if (photoId !== null) {
+        await request.put("auth/details", { ...values, photo: photoId });
+      }
       toast.success("Saved successfully");
       navigate("/");
       getUser();
@@ -79,12 +99,6 @@ const AccountPage = () => {
     }
   };
 
-  const handleChange = (e) => {
-    console.log(e);
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
-  };
-
   return (
     <Fragment>
       {loading ? (
@@ -97,8 +111,8 @@ const AccountPage = () => {
               <div className="form-photo">
                 <div className="upload-image">
                   <img
-                    src={file}
-                    alt="avatar"
+                    src={`${ENDPOINT}upload/${user?.photo}.${photoExtension}`}
+                    alt={user?.name}
                     style={{
                       width: "100%",
                       height: "100%",
@@ -106,17 +120,19 @@ const AccountPage = () => {
                     }}
                   />
                 </div>
-                <form>
-                  <input
-                    onChange={handleChange}
-                    className="form-input"
-                    type="file"
-                    placeholder="Set profile picture"
-                  />
-                  <button className="upload-btn" type="submit">
-                    Upload Image
-                  </button>
-                </form>
+                <Upload
+                  name="avatar"
+                  className="form-uploader"
+                  showUploadList={true}
+                  onChange={uploadPhoto}
+                >
+                  <Button
+                    className="form-uploader-btn"
+                    icon={<UploadOutlined />}
+                  >
+                    Upload an image
+                  </Button>
+                </Upload>
                 <div className="logout-container">
                   <p className="logout-label">Do you want to log out ? </p>
                   <Link className="logout-btn" onClick={logout} type="primary">
@@ -173,9 +189,6 @@ const AccountPage = () => {
                 wrapperCol={{
                   span: 24,
                 }}
-                // style={{
-                //   maxWidth: "90%",
-                // }}
                 onFinish={onFinish}
                 autoComplete="off"
               >

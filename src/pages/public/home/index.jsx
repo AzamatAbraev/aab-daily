@@ -9,7 +9,6 @@ import request from "../../../server";
 import { ENDPOINT } from "../../../constants";
 import Loader from "../../../utils/Loader";
 
-import homeBackground from "../../../assets/images/home-background.png";
 
 import "./style.scss";
 

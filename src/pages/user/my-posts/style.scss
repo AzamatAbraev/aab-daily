@@ -93,6 +93,30 @@
   margin-top: 30px;
 }
 
+.logout-label, .logout-btn, .password-btn {
+  margin-bottom: 0;
+  font-size: 20px !important;
+}
+
+.ant-upload-list-item-name {
+  color: blue !important;
+}
+
+.form-uploader .ant-upload-list-item-container {
+  margin-bottom: 20px !important;
+  margin-top: 0;
+}
+
+.ant-upload-icon svg {
+  fill: blue !important;
+}
+
+.ant-upload-select {
+  margin-bottom: 30px;
+}
+
+
+
 .breadcrumb {
   p {
     margin-bottom: 0;
