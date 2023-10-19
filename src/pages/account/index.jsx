@@ -49,18 +49,17 @@ const AccountPage = () => {
     }
   };
 
-  const uploadPhoto =
-    async (e) => {
-      try {
-        setPhotoExtension(e.file.name.split(".")[1]);
-        let formData = new FormData();
-        formData.append("file", e.file.originFileObj);
-        let { data } = await request.post("upload", formData);
-        setPhotoId(data?._id);
-      } catch (err) {
-        console.log(err.response.data);
-      }
-    };
+  const uploadPhoto = async (e) => {
+    try {
+      setPhotoExtension(e.file.name.split(".")[1]);
+      let formData = new FormData();
+      formData.append("file", e.file.originFileObj);
+      let { data } = await request.post("upload", formData);
+      setPhotoId(data?._id);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
 
   const onFinish = async (values) => {
     try {
@@ -135,55 +134,6 @@ const AccountPage = () => {
                       Upload an image
                     </Button>
                   </Upload>
-                  <div className="logout-container">
-                    <p className="logout-label">Do you want to log out ? </p>
-                    <Link
-                      className="logout-btn"
-                      onClick={logout}
-                      type="primary"
-                    >
-                      Logout
-                    </Link>
-                  </div>
-                  <div className="logout-container">
-                    <p className="logout-label">Password change ? </p>
-                    <Link
-                      title="Click to reset your password"
-                      className="password-btn"
-                      onClick={resetPassword}
-                      type="primary"
-                    >
-                      Reset
-                    </Link>
-                  </div>
-                  {password ? (
-                    <form
-                      onSubmit={changePassword}
-                      name="password"
-                      style={{
-                        maxWidth: "90%",
-                      }}
-                      autoComplete="off"
-                    >
-                      <input
-                        required
-                        type="password"
-                        className="form-input"
-                        placeholder="Current password"
-                        name="currentPassword"
-                      />
-                      <input
-                        required
-                        type="password"
-                        placeholder="New password"
-                        name="newPassword"
-                        className="form-input"
-                      />
-                      <button type="submit" className="reset-btn">
-                        Reset
-                      </button>
-                    </form>
-                  ) : null}
                 </div>
               </TabPanel>
               <TabPanel>
@@ -278,6 +228,58 @@ const AccountPage = () => {
                     </button>
                   </Form.Item>
                 </Form>
+                <div className="change-password">
+                  <div className="logout-container">
+                    <p className="logout-label">Do you want to log out ? </p>
+                    <Link
+                      className="logout-btn"
+                      onClick={logout}
+                      type="primary"
+                    >
+                      Logout
+                    </Link>
+                  </div>
+                  <div className="logout-container">
+                    <p className="logout-label">Password change ? </p>
+                    <Link
+                      title="Click to reset your password"
+                      className="password-btn"
+                      onClick={resetPassword}
+                      type="primary"
+                    >
+                      Reset
+                    </Link>
+                  </div>
+                  {password ? (
+                    <form
+                      onSubmit={changePassword}
+                      name="password"
+                      className="change-password-form"
+                      style={{
+                        maxWidth: "100%",
+                      }}
+                      autoComplete="off"
+                    >
+                      <input
+                        required
+                        type="password"
+                        className="form-input"
+                        placeholder="Current password"
+                        name="currentPassword"
+                      />
+                      <input
+                        required
+                        type="password"
+                        placeholder="New password"
+                        name="newPassword"
+                        className="form-input"
+                      />
+                      <button type="submit" className="reset-btn">
+                        Reset
+                      </button>
+                    </form>
+                  ) : null}
+                </div>
               </TabPanel>
             </Tabs>
             <div className="form-main"></div>
