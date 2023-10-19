@@ -1,27 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Fragment, useCallback, useContext, useEffect, useState } from "react";
-import { Button, Form, Input, Upload } from "antd";
-
+import { Fragment, useContext, useEffect, useState } from "react";
+import { Button, Form, Input, Modal, Upload } from "antd";
+import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { UploadOutlined } from "@ant-design/icons";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import { AuthContext } from "../../context/AuthContext";
-import Cookies from "js-cookie";
-import { ENDPOINT, ROLE, TOKEN } from "../../constants";
+import { ENDPOINT } from "../../constants";
 import Loader from "../../utils/Loader";
-
 import request from "../../server";
 
 import "./style.scss";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 const AccountPage = () => {
-  const { setIsAuthenticated, setRole, setLoading, loading, user, getUser } =
+  const { logout, setLoading, loading, user, getUser } =
     useContext(AuthContext);
   const navigate = useNavigate();
   const [photoId, setPhotoId] = useState(null);
   const [photo, setPhoto] = useState(null);
-  const [file, setFile] = useState();
   const [password, setPassword] = useState(false);
   const [form] = Form.useForm();
   const [photoExtension, setPhotoExtension] = useState("jpg");
@@ -37,17 +34,6 @@ const AccountPage = () => {
     form.setFieldsValue(user);
     setPhoto(user?.photo);
   }, [user, form]);
-
-  const logout = async () => {
-    let confirmation = confirm("Do you want to log out ?");
-    if (confirmation) {
-      Cookies.remove(TOKEN);
-      localStorage.removeItem(ROLE);
-      setIsAuthenticated(false);
-      setRole(null);
-      navigate("/");
-    }
-  };
 
   const uploadPhoto = async (e) => {
     try {
@@ -103,39 +89,10 @@ const AccountPage = () => {
           <div className="container register__container">
             <Tabs className="tab">
               <TabList className="tab-account">
-                <Tab className="tab-item tab1">Set profile picture</Tab>
-                <Tab className="tab-item tab2">Edit account info</Tab>
+                <Tab className="tab-item tab1">Edit account info</Tab>
+                <Tab className="tab-item tab2">Set profile picture</Tab>
               </TabList>
 
-              <TabPanel>
-                <h1 className="login__title">Profile Picture</h1>
-                <div className="form-photo">
-                  <div className="upload-image">
-                    <img
-                      src={`${ENDPOINT}upload/${user?.photo}.${photoExtension}`}
-                      alt={user?.name}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </div>
-                  <Upload
-                    name="avatar"
-                    className="form-uploader"
-                    showUploadList={true}
-                    onChange={uploadPhoto}
-                  >
-                    <Button
-                      className="form-uploader-btn"
-                      icon={<UploadOutlined />}
-                    >
-                      Upload an image
-                    </Button>
-                  </Upload>
-                </div>
-              </TabPanel>
               <TabPanel>
                 <h1 className="login__title">Account</h1>
                 <Form
@@ -233,7 +190,12 @@ const AccountPage = () => {
                     <p className="logout-label">Do you want to log out ? </p>
                     <Link
                       className="logout-btn"
-                      onClick={logout}
+                      onClick={() =>
+                        Modal.confirm({
+                          title: "Do you want to log out ?",
+                          onOk: () => logout(navigate),
+                        })
+                      }
                       type="primary"
                     >
                       Logout
@@ -279,6 +241,35 @@ const AccountPage = () => {
                       </button>
                     </form>
                   ) : null}
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <h1 className="login__title">Profile Picture</h1>
+                <div className="form-photo">
+                  <div className="upload-image">
+                    <img
+                      src={`${ENDPOINT}upload/${user?.photo}.${photoExtension}`}
+                      alt={user?.name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
+                  <Upload
+                    name="avatar"
+                    className="form-uploader"
+                    showUploadList={true}
+                    onChange={uploadPhoto}
+                  >
+                    <Button
+                      className="form-uploader-btn"
+                      icon={<UploadOutlined />}
+                    >
+                      Upload an image
+                    </Button>
+                  </Upload>
                 </div>
               </TabPanel>
             </Tabs>

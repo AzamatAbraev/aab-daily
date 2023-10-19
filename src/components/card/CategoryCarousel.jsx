@@ -5,8 +5,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import request from "../../server";
 import { ENDPOINT } from "../../constants";
-
 import icon from "../../assets/images/icon.svg";
+
 
 import "./CategoryCarousel.scss";
 

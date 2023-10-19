@@ -6,15 +6,20 @@ import BlogPostPage from "./pages/public/blog-post";
 import AboutPage from "./pages/public/about";
 import RegisterPage from "./pages/public/register";
 import LoginPage from "./pages/public/login";
+import AdminLayout from "./components/layout/admin";
 
 import FrontLayout from "./components/layout/front";
 import MyPostsPage from "./pages/user/my-posts";
-import {useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import AccountPage from "./pages/account";
 import DashboardPage from "./pages/admin/dashboard";
 import NotFoundPage from "./pages/public/not-found";
 import CategoryPage from "./pages/public/category";
+import CategoriesPage from "./pages/admin/categories";
+import UsersPage from "./pages/admin/users";
+import UserPostsPage from "./pages/admin/posts";
+import AllPostsPage from "./pages/admin/all-posts";
 
 function App() {
   const { isAuthenticated, role } = useContext(AuthContext);
@@ -47,8 +52,15 @@ function App() {
           />
         </Route>
         {isAuthenticated && role === "admin" ? (
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route element={<AdminLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/categories/:categoryId" element={<UserPostsPage />} />
+            <Route path="/allposts" element={<AllPostsPage />} />
+            <Route path="/users" element={<UsersPage />} />
+          </Route>
         ) : null}
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

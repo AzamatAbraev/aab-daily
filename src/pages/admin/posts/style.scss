@@ -1,0 +1,19 @@
+@use "../../../constants/Variables.scss" as vrb;
+
+.search-results, .category-posts-title {
+  color: vrb.$black;
+  font-family: 'Sen';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 48px;
+}
+
+.category-posts-title {
+  font-size: 32px;
+  line-height: 48px;
+  margin-bottom: 0;
+}
+
+.posts-header {
+  margin-bottom: 10px;
+}

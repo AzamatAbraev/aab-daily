@@ -9,6 +9,7 @@ import { longDate } from "../../constants/dateConvert";
 import carouselBlog from "../../assets/images/carousel-1.svg";
 
 import "./BlogCarousel.scss";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const BlogCarousel = () => {
   const [blogs, setBlogs] = useState([]);
@@ -83,7 +84,7 @@ const BlogCarousel = () => {
       {blogs.map((blog) => (
         <div key={blog._id} className="carousel__card card">
           <Link to={`/blog-post/${blog?._id}`} className="card__image">
-            <img
+            <LazyLoadImage
               onError={() => setDefaultImage()}
               className="blog-carousel-image"
               src={

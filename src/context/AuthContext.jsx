@@ -15,18 +15,23 @@ const AuthContextProvider = ({ children }) => {
   const [role, setRole] = useState(localStorage.getItem(ROLE));
   const [savedPassword, setSavedPassword] = useState(null);
   const [savedUsername, setSavedUsername] = useState(null);
+  const [username, setUsername] = useState(null);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-
-
-
-
+  const logout = (navigate) => {
+    Cookies.remove(TOKEN);
+    localStorage.removeItem(ROLE);
+    setIsAuthenticated(false);
+    setRole(null);
+    navigate("/");
+  };
 
   const getUser = async () => {
     try {
       let { data } = await request.get("auth/me");
       setUser(data);
+      setUsername(data?.username);
     } catch (err) {
       console.log(err);
     }
@@ -43,12 +48,15 @@ const AuthContextProvider = ({ children }) => {
     savedUsername,
     loading,
     user,
+    username,
     setIsAuthenticated,
     setRole,
     setSavedPassword,
     setSavedUsername,
     setLoading,
     setUser,
+    setUsername,
+    logout,
   };
 
   return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
