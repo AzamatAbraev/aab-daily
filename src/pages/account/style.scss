@@ -117,13 +117,42 @@
   margin-bottom: 0;
 }
 
-// .ant-upload input {
-//   display: block !important;
-// }
+.tab-account {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  margin-bottom: 30px !important;
+}
 
-// .ant-upload div {
-//   display: none !important;
-// }
+.tab-item {
+  padding: 10px 20px !important;
+  border: 1px solid #232536 !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  color: #232536 !important;
+  font-family: 'Sen' !important;
+}
+
+.tab1 {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+
+.tab2 {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-left: none !important;
+}
+
+
+
+.react-tabs__tab--selected {
+  background-color: #ffd050 !important;
+}
+
+.tab-item:focus {
+  outline: none !important;
+}
 
 .form-input:focus {
   outline: none !important;
@@ -172,8 +201,28 @@
   }
 }
 
+.form-photo {
+  width: 60% !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.account-form {
+  width: 60%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.login__title {
+  margin-bottom: 0px !important;
+}
+
 .account-form {
   max-width: 90%;
+}
+
+.tab {
+  padding-top: 50px !important;
 }
 
 @media (max-width: 800px) {
@@ -183,5 +232,11 @@
 
   .account-form {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .account-form, .form-photo {
+    width: 100% !important;
   }
 }

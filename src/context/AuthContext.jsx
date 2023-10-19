@@ -18,6 +18,11 @@ const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
+
+
+
+
+
   const getUser = async () => {
     try {
       let { data } = await request.get("auth/me");

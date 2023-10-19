@@ -13,16 +13,18 @@ import Loader from "../../../utils/Loader";
 import "./style.scss";
 
 const HomePage = () => {
+  const { loading, setLoading } = useContext(AuthContext);
+  const { pathname } = useLocation();
+
   const [latestPost, setLatestPost] = useState([]);
   const [date, setDate] = useState("");
   const [image, setImage] = useState(null);
 
-  const { loading, setLoading } = useContext(AuthContext);
-  const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -62,7 +64,6 @@ const HomePage = () => {
     };
   }, [latestPost.createdAt]);
 
-  console.log(latestPost);
 
   return (
     <div>

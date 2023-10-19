@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
 
 import request from "../../server";
@@ -14,19 +14,17 @@ const BlogCarousel = () => {
   const [blogs, setBlogs] = useState([]);
   const [photoExists, setPhotoExists] = useState(null);
 
-  const getPopularBlogs = async () => {
-    try {
-      let { data } = await request.get("/post/lastones");
-      setBlogs(data);
-      setPhotoExists(data?.photo._id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
     const controller = new AbortController();
-
+    const getPopularBlogs = async () => {
+      try {
+        let { data } = await request.get("/post/lastones");
+        setBlogs(data);
+        setPhotoExists(data?.photo._id);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getPopularBlogs();
 
     return () => {
@@ -89,8 +87,11 @@ const BlogCarousel = () => {
               onError={() => setDefaultImage()}
               className="blog-carousel-image"
               src={
-                blog?.photo ?
-                `${ENDPOINT}/upload/${blog?.photo._id}.${`${blog?.photo.name.split(".")[1]}`}` : "https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
+                blog?.photo
+                  ? `${ENDPOINT}/upload/${blog?.photo._id}.${`${
+                      blog?.photo.name.split(".")[1]
+                    }`}`
+                  : "https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
               }
             />
           </Link>

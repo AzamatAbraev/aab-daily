@@ -8,15 +8,27 @@ import menu from "../../../assets/images/menu.svg";
 
 import "./Header.scss";
 import { AuthContext } from "../../../context/AuthContext";
+import { useEffect } from "react";
 
 const Header = () => {
   const { isAuthenticated } = useContext(AuthContext);
-  const [handleNav, setHandleNav] = useState(false);
   const screenSize = useScreenSize();
+  const [handleNav, setHandleNav] = useState(false);
+
+  useEffect(() => {
+    if (screenSize > 720) {
+      setHandleNav(false)
+    }
+  }, [screenSize])
 
   const openNav = () => {
     setHandleNav(!handleNav);
   };
+
+  const closeNav = () => {
+    setHandleNav(false);
+  }
+
   return (
     <header>
       <nav className="nav">
@@ -73,31 +85,31 @@ const Header = () => {
           {handleNav && screenSize <= 720 ? (
             <div className="nav__res__menu">
               <li className="nav__item">
-                <NavLink to="/" className="nav__link">
+                <NavLink onClick={closeNav} to="/" className="nav__link">
                   Home
                 </NavLink>
               </li>
               <li className="nav__item">
-                <NavLink to="/posts" className="nav__link">
+                <NavLink onClick={closeNav} to="/posts" className="nav__link">
                   Blog
                 </NavLink>
               </li>
               <li className="nav__item">
-                <NavLink to="/about" className="nav__link">
+                <NavLink onClick={closeNav} to="/about" className="nav__link">
                   About Us
                 </NavLink>
               </li>
               <li className="nav__item">
-                <NavLink to="/register" className="nav__link">
+                <NavLink onClick={closeNav} to="/register" className="nav__link">
                   Register
                 </NavLink>
               </li>
               {isAuthenticated ? (
-                <Link to="/account" className="nav__login__btn">
+                <Link onClick={closeNav} to="/account" className="nav__login__btn">
                   Account
                 </Link>
               ) : (
-                <Link to="/login" className="nav__login__btn">
+                <Link onClick={closeNav} to="/login" className="nav__login__btn">
                   Login
                 </Link>
               )}

@@ -52,6 +52,10 @@
     font-weight: 400;
     line-height: 28px;
     width: 50%;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   &__posts__btn {
@@ -100,7 +104,7 @@
 
   &__title {
     color: vrb.$black;
-    font-family: 'Sen';
+    font-family: "Sen";
     font-size: 36px;
     font-weight: 700;
     line-height: 48px;
