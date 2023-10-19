@@ -52,11 +52,11 @@ const DashboardPage = () => {
             </div>
             <div className="stats-card">
               <h3>+{userTotal}</h3>
-              <p>Users</p>
+              <p>New users</p>
             </div>
             <div className="stats-card">
               <h3>{postTotal}</h3>
-              <p>Posts</p>
+              <p>Total posts</p>
             </div>
             <div className="stats-card">
               <h3>2</h3>
