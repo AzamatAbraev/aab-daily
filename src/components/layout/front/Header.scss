@@ -9,6 +9,17 @@
   z-index: 10;
 }
 
+.lang-select {
+  background-color: vrb.$white;
+  font-family: 'Sen';
+  border-radius: 4px;
+  cursor: pointer;
+} 
+
+.lang-select:focus {
+  outline: none;
+}
+
 .nav {
   &__container {
     display: flex;

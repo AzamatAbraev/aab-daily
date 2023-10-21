@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { switchLanguage } from "../../../redux/actions/language";
 
 const Header = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, name } = useContext(AuthContext);
   const screenSize = useScreenSize();
   const [handleNav, setHandleNav] = useState(false);
 
@@ -75,7 +75,7 @@ const Header = () => {
             <li className="nav__item">
               {isAuthenticated ? (
                 <Link to="/account" className="nav__login__btn">
-                  Account
+                 {name ? name : "..."}
                 </Link>
               ) : (
                 <Link to="/login" className="nav__login__btn">
@@ -85,6 +85,7 @@ const Header = () => {
             </li>
             <li className="nav__item">
               <select
+              className="lang-select"
                 onChange={(e) => dispatch(switchLanguage(e.target.value))}
                 value={languageType}
               >
@@ -143,6 +144,7 @@ const Header = () => {
               )}
               <li className="nav__item">
                 <select
+                className="lang-select"
                   onChange={(e) => dispatch(switchLanguage(e.target.value))}
                   value={languageType}
                 >

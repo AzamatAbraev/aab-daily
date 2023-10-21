@@ -16,6 +16,7 @@ const AuthContextProvider = ({ children }) => {
   const [savedPassword, setSavedPassword] = useState(null);
   const [savedUsername, setSavedUsername] = useState(null);
   const [username, setUsername] = useState(null);
+  const [name, setName] = useState(null);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -32,6 +33,7 @@ const AuthContextProvider = ({ children }) => {
       let { data } = await request.get("auth/me");
       setUser(data);
       setUsername(data?.username);
+      setName(data?.first_name);
     } catch (err) {
       console.log(err);
     }
@@ -49,6 +51,7 @@ const AuthContextProvider = ({ children }) => {
     loading,
     user,
     username,
+    name,
     setIsAuthenticated,
     setRole,
     setSavedPassword,
@@ -56,6 +59,7 @@ const AuthContextProvider = ({ children }) => {
     setLoading,
     setUser,
     setUsername,
+    setName,
     logout,
   };
 

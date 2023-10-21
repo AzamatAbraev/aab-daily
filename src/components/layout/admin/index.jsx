@@ -63,7 +63,7 @@ const AdminLayout = () => {
               label: <Link to="/categories">Categories</Link>,
             },
             {
-              key: "/user-posts",
+              key: "/allposts",
               icon: <DatabaseOutlined />,
               label: <Link to="/allposts">Posts</Link>,
             },

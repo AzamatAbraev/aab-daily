@@ -1,16 +1,15 @@
+import { useEffect, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Flex, Image, Pagination, Space, Table } from "antd";
 import Search from "antd/es/input/Search";
-import { useEffect } from "react";
-import { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { changePage, searchCategories } from "../../../redux/actions/post";
+
+import { changePage, searchPosts, getPosts } from "../../../redux/actions/post";
 import { ENDPOINT, POSTS_LIMIT } from "../../../constants";
-import { getPosts } from "../../../redux/actions/post";
 
 const AllPostsPage = () => {
   const dispatch = useDispatch();
-  const { categories, total, loading, activePage } = useSelector(
+
+  const { posts, total, loading, activePage, search } = useSelector(
     (state) => state.post
   );
 
@@ -28,6 +27,7 @@ const AllPostsPage = () => {
           <Image
             height={50}
             width={50}
+            alt=""
             src={`${ENDPOINT}upload/${data?._id}.${data?.name.split(".")[1]}`}
           />
         );
@@ -66,13 +66,11 @@ const AllPostsPage = () => {
           <Button danger type="primary">
             Delete
           </Button>
-          {/* <Link to={`/categories/${data}`} type="primary">
-            See more
-          </Link> */}
         </Space>
       ),
     },
   ];
+
   return (
     <Fragment>
       <Table
@@ -90,13 +88,13 @@ const AllPostsPage = () => {
             </Flex>
             <Search
               placeholder="Searching .."
-              onChange={(e) => dispatch(searchCategories(e.target.value))}
+              onChange={(e) => dispatch(searchPosts(e.target.value))}
               size="large"
             />
             <p className="search-results">A total of {total} posts found</p>
           </Fragment>
         )}
-        dataSource={categories}
+        dataSource={posts}
         columns={columns}
         pagination={false}
       />
@@ -106,7 +104,7 @@ const AllPostsPage = () => {
           total={total}
           pageSize={POSTS_LIMIT}
           current={activePage}
-          onChange={(page) => dispatch(changePage(page))}
+          onChange={(page) => dispatch(changePage(page, search))}
         />
       ) : null}
     </Fragment>

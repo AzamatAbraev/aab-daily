@@ -1,6 +1,6 @@
 import { Fragment, memo, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 
@@ -14,6 +14,7 @@ import Loader from "../../../utils/Loader";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const {pathname} = useLocation();
   const {
     loading,
     setLoading,
@@ -22,6 +23,10 @@ const LoginPage = () => {
     setRole,
     setPassword,
   } = useContext(AuthContext);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     setLoading(true);

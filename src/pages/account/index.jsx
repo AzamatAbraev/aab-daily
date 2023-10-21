@@ -1,7 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Button, Form, Input, Modal, Upload } from "antd";
-import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { UploadOutlined } from "@ant-design/icons";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -21,6 +20,7 @@ const AccountPage = () => {
   const [photo, setPhoto] = useState(null);
   const [password, setPassword] = useState(false);
   const [form] = Form.useForm();
+  const { pathname } = useLocation();
   const [photoExtension, setPhotoExtension] = useState("jpg");
 
   useEffect(() => {
@@ -29,6 +29,10 @@ const AccountPage = () => {
       setLoading(false);
     }, 1000);
   }, [setLoading]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     form.setFieldsValue(user);

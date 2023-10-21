@@ -1,17 +1,15 @@
 import { POSTS_LIMIT } from "../../constants";
 import request from "../../server";
-import {
-  POSTS_FETCHING,
-  POSTS_LOADING,
-  POSTS_PAGE,
-  POSTS_SEARCH,
-  POSTS_TOTAL,
-} from "../types/post";
+import { POST_ACTIONS } from "../types/post";
 
-export const getPosts = (page = 1, search = "") => {
-  return async (dispatch) => {
+const updateStateChange = (payload) => ({ type: POST_ACTIONS, payload });
+
+export const getPosts =
+  (page = 1, search = "") =>
+  async (dispatch) => {
     try {
-      dispatch({ type: POSTS_LOADING, payload: true });
+      dispatch(updateStateChange({ loading: true }));
+
       let {
         data: {
           data,
@@ -20,28 +18,24 @@ export const getPosts = (page = 1, search = "") => {
       } = await request.get("post", {
         params: { page, limit: POSTS_LIMIT, search },
       });
+      const posts = data.map((el) => ({ ...el, key: el._id }));
 
-      dispatch({ type: POSTS_FETCHING, payload: data });
-      dispatch({ type: POSTS_TOTAL, payload: total });
+      dispatch(updateStateChange({ posts }));
+      dispatch(updateStateChange({ total }));
     } catch (err) {
       console.log(err);
     } finally {
-      dispatch({ type: POSTS_LOADING, payload: false });
+      dispatch(updateStateChange({ loading: false }));
     }
   };
+
+export const changePage = (page, search) => (dispatch) => {
+  dispatch(updateStateChange({ activePage: page }));
+  dispatch(getPosts(page, search));
 };
 
-export const changePage = (page) => {
-  return (dispatch) => {
-    dispatch({ type: POSTS_PAGE, payload: page });
-    dispatch(getPosts(page));
-  };
-};
-
-export const searchCategories = (search) => {
-  return (dispatch) => {
-    dispatch({ type: POSTS_SEARCH, payload: search });
-    dispatch({ type: POSTS_PAGE, payload: 1 });
-    dispatch(getPosts(1, search));
-  };
+export const searchPosts = (search) => (dispatch) => {
+  dispatch(updateStateChange({ search: search }));
+  dispatch(updateStateChange({ activePage: 1 }));
+  dispatch(getPosts(1, search));
 };

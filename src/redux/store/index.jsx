@@ -19,12 +19,12 @@ const rootReducer = combineReducers({
 
 export const Store = createStore(rootReducer, applyMiddleware(thunk));
 
-const StoreProvider = ({children}) => {
+const StoreProvider = ({ children }) => {
   return <Provider store={Store}>{children}</Provider>;
 };
 
 StoreProvider.propTypes = {
   children: PropTypes.node,
-}
+};
 
 export default StoreProvider;

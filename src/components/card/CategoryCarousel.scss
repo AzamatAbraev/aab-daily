@@ -34,8 +34,8 @@
   padding-right: 16px;
 }
 
-/* the slides */
-// .category .slick-slide {
-//   margin-right: 5px;
-//   margin-left: 5px;
-// }
+.carousel-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}

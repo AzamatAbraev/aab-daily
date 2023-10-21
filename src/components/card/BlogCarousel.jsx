@@ -38,9 +38,7 @@ const BlogCarousel = () => {
       e.target.src = carouselBlog;
     }
   };
-  console.log(blogs);
 
-  console.log(photoExists);
 
   const settings = {
     dots: false,

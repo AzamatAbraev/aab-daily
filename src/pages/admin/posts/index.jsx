@@ -129,7 +129,7 @@ const UserPostsPage = () => {
           total={total}
           pageSize={CATEGORY_POSTS_LIMIT}
           current={activePage}
-          onChange={(page) => dispatch(changePostsPage(page))}
+          onChange={(page) => dispatch(changePostsPage(page, search))}
         />
       ) : null}
     </Fragment>

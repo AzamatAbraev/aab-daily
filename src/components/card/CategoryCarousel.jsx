@@ -74,6 +74,7 @@ const CategoryCarousel = () => {
         >
           <div className="category__card">
             <LazyLoadImage
+            className="carousel-img"
               onError={(e) => addDefaultImage(e)}
               src={`${ENDPOINT}upload/${category.photo._id}.${
                 category.photo.name.split(".")[1]

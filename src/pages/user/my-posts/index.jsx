@@ -190,7 +190,13 @@ const MyPostsPage = () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => deletePost(post?._id)}
+                      // onClick={() => deletePost(post?._id)}
+                      onClick={() =>
+                        Modal.confirm({
+                          title: "Do you want to delete the post ?",
+                          onOk: () => deletePost(post?._id),
+                        })
+                      }
                       className="delete-btn"
                     >
                       Delete
@@ -206,6 +212,7 @@ const MyPostsPage = () => {
               onOk={handleOk}
               okText={selected === null ? `Add post` : "Save post"}
               onCancel={handleCancel}
+              width={700}
             >
               <Form
                 id="post-form"

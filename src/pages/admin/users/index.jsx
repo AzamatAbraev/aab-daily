@@ -1,19 +1,25 @@
-import { Button, Flex, Image, Pagination, Space, Table } from "antd";
+import { Button, Flex, Image, Modal, Pagination, Space, Table } from "antd";
 import Search from "antd/es/input/Search";
 
-import {FileImageOutlined} from "@ant-design/icons";
-
+import { UserOutlined } from "@ant-design/icons";
 
 import { useEffect } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ENDPOINT, USER_LIMIT } from "../../../constants";
-import { changeUsersPage, getUsers, searchUsers } from "../../../redux/actions/user";
+import {
+  changeUsersPage,
+  deleteUser,
+  getUsers,
+  searchUsers,
+} from "../../../redux/actions/user";
+
+import "./style.scss";
 
 const UsersPage = () => {
   const dispatch = useDispatch();
-  const { categories, total, loading, activePage } = useSelector(
+  const { users, total, loading, activePage, search } = useSelector(
     (state) => state.user
   );
 
@@ -26,17 +32,24 @@ const UsersPage = () => {
       title: "Image",
       dataIndex: "photo",
       key: "photo",
-      render: (data) => data !== null ? <Image src={`${ENDPOINT}upload/${data?._id}.${data?.name.split(".")[1]}`}/> : (<FileImageOutlined />)
+      render: (data) =>
+        data ? (
+          <Image src={`${ENDPOINT}upload/${data.split("_")[1]}`} />
+        ) : (
+          <UserOutlined />
+        ),
     },
     {
       title: "First name",
       dataIndex: "first_name",
       key: "first_name",
+      render: (data) => <p className="firstName">{data}</p>,
     },
     {
       title: "Last name",
       dataIndex: "last_name",
       key: "last_name",
+      render: (data) => <p className="lastName">{data}</p>,
     },
     {
       title: "Username",
@@ -47,7 +60,7 @@ const UsersPage = () => {
       title: "Account created",
       dataIndex: "createdAt",
       key: "description",
-      render: (data) => <p>{data.split("T")[0]}</p>,
+      render: (data) => <p className="accountCreated">{data.split("T")[0]}</p>,
     },
     {
       title: "Action",
@@ -56,7 +69,14 @@ const UsersPage = () => {
       render: (data) => (
         <Space size="middle">
           <Button type="primary">Edit</Button>
-          <Button danger type="primary">
+          <Button
+            onClick={() => Modal.confirm({
+              title: "Do you want to delete this user ?",
+              onOk: () => dispatch(deleteUser(data, search)),
+            })}
+            danger
+            type="primary"
+          >
             Delete
           </Button>
           <Link to={`/categories/${data}`} type="primary">
@@ -66,6 +86,7 @@ const UsersPage = () => {
       ),
     },
   ];
+
   return (
     <Fragment>
       <Table
@@ -89,7 +110,7 @@ const UsersPage = () => {
             <p className="search-results">A total of {total} users found</p>
           </Fragment>
         )}
-        dataSource={categories}
+        dataSource={users}
         columns={columns}
         pagination={false}
       />
@@ -99,7 +120,7 @@ const UsersPage = () => {
           total={total}
           pageSize={USER_LIMIT}
           current={activePage}
-          onChange={(page) => dispatch(changeUsersPage(page))}
+          onChange={(page) => dispatch(changeUsersPage(page, search))}
         />
       ) : null}
     </Fragment>
