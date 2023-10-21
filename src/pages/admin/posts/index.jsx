@@ -1,11 +1,10 @@
 import { Button, Flex, Image, Pagination, Space, Table } from "antd";
-import { useParams } from "react-router-dom";
-import { Fragment } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
 import Search from "antd/es/input/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+
 import { changePostsPage, getCategoryPosts, searchCategoryPosts } from "../../../redux/actions/categoryPosts";
-import { useState } from "react";
 import { CATEGORY_POSTS_LIMIT, ENDPOINT } from "../../../constants";
 
 import "./style.scss";
@@ -78,15 +77,15 @@ const UserPostsPage = () => {
       title: "Action",
       dataIndex: "_id",
       key: "_id",
-      render: () => (
+      render: (data) => (
         <Space size="middle">
           <Button type="primary">Edit</Button>
           <Button danger type="primary">
             Delete
           </Button>
-          {/* <Link to={`/user-posts/${data}`} type="primary">
-            See more
-          </Link> */}
+          <Link to={`/user-posts/${data}`} type="primary">
+            Read more
+          </Link>
         </Space>
       ),
     },

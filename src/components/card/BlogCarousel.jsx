@@ -13,7 +13,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const BlogCarousel = () => {
   const [blogs, setBlogs] = useState([]);
-  const [photoExists, setPhotoExists] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -21,7 +20,6 @@ const BlogCarousel = () => {
       try {
         let { data } = await request.get("/post/lastones");
         setBlogs(data);
-        setPhotoExists(data?.photo._id);
       } catch (err) {
         console.log(err);
       }

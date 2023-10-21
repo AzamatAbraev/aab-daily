@@ -1,19 +1,18 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from "react";
-
-import { AuthContext } from "../../../context/AuthContext";
-import Loader from "../../../utils/Loader";
+import { Button, Form, Input, Modal, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-
-import "./style.scss";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import request from "../../../server";
+
+import { AuthContext } from "../../../context/AuthContext";
 import { ENDPOINT } from "../../../constants";
-import { Button, Form, Input, Modal, Select, Upload } from "antd";
+import Loader from "../../../utils/Loader";
+import request from "../../../server";
+
+import "./style.scss";
 
 const MyPostsPage = () => {
   const { loading, setLoading } = useContext(AuthContext);
-
   const [category, setCategory] = useState(null);
   const [photoId, setPhotoId] = useState(null);
   const [categories, setCategories] = useState(null);
@@ -22,6 +21,7 @@ const MyPostsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     setLoading(true);
@@ -33,7 +33,6 @@ const MyPostsPage = () => {
     };
   }, [setLoading]);
 
-  const [form] = Form.useForm();
 
   const getUserPost = useCallback(async () => {
     try {
@@ -108,7 +107,6 @@ const MyPostsPage = () => {
   };
 
   const handleChange = (value) => {
-    console.log(value);
     setCategory(value);
   };
 
@@ -135,8 +133,6 @@ const MyPostsPage = () => {
       console.log(err);
     }
   };
-
-  console.log(selected);
 
   return (
     <Fragment>
@@ -190,7 +186,6 @@ const MyPostsPage = () => {
                       Edit
                     </button>
                     <button
-                      // onClick={() => deletePost(post?._id)}
                       onClick={() =>
                         Modal.confirm({
                           title: "Do you want to delete the post ?",

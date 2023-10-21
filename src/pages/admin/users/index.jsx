@@ -1,6 +1,17 @@
-import { Button, Flex, Image, Modal, Pagination, Space, Table } from "antd";
+import {
+  Alert,
+  Button,
+  Flex,
+  Form,
+  Image,
+  Input,
+  Modal,
+  Pagination,
+  Space,
+  Table,
+} from "antd";
 import Search from "antd/es/input/Search";
-
+import Password from "antd/es/input/Password";
 import { UserOutlined } from "@ant-design/icons";
 
 import { useEffect } from "react";
@@ -10,22 +21,44 @@ import { Link } from "react-router-dom";
 import { ENDPOINT, USER_LIMIT } from "../../../constants";
 import {
   changeUsersPage,
+  controlModal,
   deleteUser,
+  editUser,
   getUsers,
   searchUsers,
+  sendCategory,
+  showModal,
 } from "../../../redux/actions/user";
 
 import "./style.scss";
 
 const UsersPage = () => {
   const dispatch = useDispatch();
-  const { users, total, loading, activePage, search } = useSelector(
-    (state) => state.user
-  );
+  const [form] = Form.useForm();
+
+  const {
+    users,
+    total,
+    loading,
+    activePage,
+    search,
+    isModalOpen,
+    isModalLoading,
+    selected,
+  } = useSelector((state) => state.user);
 
   useEffect(() => {
     total === 0 && dispatch(getUsers());
   }, [dispatch, total]);
+
+  const handleOk = async () => {
+    const values = await form.validateFields();
+    dispatch(sendCategory({ values, selected, activePage, search, form }));
+  };
+
+  const closeModal = () => {
+    dispatch(controlModal(false));
+  };
 
   const columns = [
     {
@@ -68,20 +101,21 @@ const UsersPage = () => {
       key: "_id",
       render: (data) => (
         <Space size="middle">
-          <Button type="primary">Edit</Button>
+          <Button onClick={() => dispatch(editUser(form, data))} type="primary">
+            Edit
+          </Button>
           <Button
-            onClick={() => Modal.confirm({
-              title: "Do you want to delete this user ?",
-              onOk: () => dispatch(deleteUser(data, search)),
-            })}
+            onClick={() =>
+              Modal.confirm({
+                title: "Do you want to delete this user ?",
+                onOk: () => dispatch(deleteUser(data, search)),
+              })
+            }
             danger
             type="primary"
           >
             Delete
           </Button>
-          <Link to={`/categories/${data}`} type="primary">
-            See more
-          </Link>
         </Space>
       ),
     },
@@ -98,7 +132,12 @@ const UsersPage = () => {
           <Fragment>
             <Flex align="center" justify="space-between">
               <h1>All Users</h1>
-              <Button className="modal-btn" type="primary" size="large">
+              <Button
+                onClick={() => dispatch(showModal(form))}
+                className="modal-btn"
+                type="primary"
+                size="large"
+              >
                 Add user
               </Button>
             </Flex>
@@ -123,6 +162,96 @@ const UsersPage = () => {
           onChange={(page) => dispatch(changeUsersPage(page, search))}
         />
       ) : null}
+      <Modal
+        title="User Info"
+        open={isModalOpen}
+        maskClosable={false}
+        confirmLoading={isModalLoading}
+        onOk={handleOk}
+        okText={selected === null ? "Add user" : "Save user"}
+        onCancel={closeModal}
+      >
+        <Form
+          form={form}
+          className="modal-form"
+          name="category"
+          labelCol={{
+            span: 24,
+          }}
+          wrapperCol={{
+            span: 24,
+          }}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="First name"
+            name="first_name"
+            rules={[
+              {
+                required: true,
+                message: "Please write your first name!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Last name"
+            name="last_name"
+            rules={[
+              {
+                required: true,
+                message: "Please write your last name!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Please write your username!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Alert type="error" message="Editing password is not allowed !"/>
+
+          {selected === null ? (
+            <Fragment>
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please write your password!",
+                  },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+              <Form.Item
+                label="Confirm password"
+                name="confirm"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please confirm your password!",
+                  },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+            </Fragment>
+          ) : null}
+        </Form>
+      </Modal>
     </Fragment>
   );
 };

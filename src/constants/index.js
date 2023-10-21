@@ -6,5 +6,5 @@ export const ENDPOINT = "https://ap-blog-backend.up.railway.app/";
 export const LANGUAGE = "BLOG_LANGUAGE";
 export const CATEGORY_LIMIT = 4;
 export const POSTS_LIMIT = 8;
-export const USER_LIMIT = 8;
+export const USER_LIMIT = 10;
 export const CATEGORY_POSTS_LIMIT = 6;

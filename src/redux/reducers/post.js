@@ -9,6 +9,11 @@ const initialState = {
   total: 0,
   activePage: 1,
   search: "",
+  isModalOpen: false,
+  isModalLoading: false,
+  selected: null,
+  imageLoading: false,
+  imageData: null,
 };
 
 const postsReducer = (state = initialState, { type, payload }) => {

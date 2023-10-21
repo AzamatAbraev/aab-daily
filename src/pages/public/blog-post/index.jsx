@@ -1,20 +1,17 @@
 import { Fragment, memo, useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
-import request from "../../../server";
+import { AuthContext } from "../../../context/AuthContext";
 import { ENDPOINT } from "../../../constants";
 import { longDate } from "../../../constants/dateConvert";
-
-import deafaultImg from "../../../assets/images/why-we-started.png";
+import request from "../../../server";
+import Loader from "../../../utils/Loader";
 
 import "./style.scss";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { AuthContext } from "../../../context/AuthContext";
-import Loader from "../../../utils/Loader";
 
 const BlogPostPage = () => {
   const { loading, setLoading } = useContext(AuthContext);
-
   const [post, setPost] = useState();
   const { blogId } = useParams();
 
@@ -33,12 +30,6 @@ const BlogPostPage = () => {
     getPost();
   }, [blogId, setLoading]);
 
-  const setDefaultImage = (e) => {
-    if (e.target.src === null) {
-      e.target.src = deafaultImg;
-    }
-  };
-
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -55,7 +46,6 @@ const BlogPostPage = () => {
             <div className="blog-post__image">
               <LazyLoadImage
                 className="blog-post-image"
-                // onError={(e) => setDefaultImage(e.target.src)}
                 src={
                   post?.photo
                     ? `${ENDPOINT}/upload/${post?.photo._id}.${

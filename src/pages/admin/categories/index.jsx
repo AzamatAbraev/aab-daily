@@ -1,3 +1,6 @@
+import { useEffect, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   Button,
   Flex,
@@ -10,11 +13,9 @@ import {
   Table,
   Upload,
 } from "antd";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
-import { useEffect } from "react";
-import { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+
 import {
   changePage,
   controlModal,
@@ -30,11 +31,11 @@ import { getCategoryImage } from "../../../utils/getImage";
 import { CATEGORY_LIMIT } from "../../../constants";
 
 import "./style.scss";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 const CategoriesPage = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+
   const {
     categories,
     total,
@@ -53,15 +54,14 @@ const CategoriesPage = () => {
   }, [dispatch, total]);
 
   const handleOk = async () => {
-    const values = await form.validateFields()
-    values.photo = imageData._id; 
-    dispatch(sendCategory({values, selected, activePage, search, form}))
+    const values = await form.validateFields();
+    values.photo = imageData._id;
+    dispatch(sendCategory({ values, selected, activePage, search, form }));
   };
 
   const closeModal = () => {
     dispatch(controlModal(false));
   };
-
 
   const columns = [
     {
@@ -197,11 +197,11 @@ const CategoriesPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please write your description!",
+                message: "Please write at least 10 words!",
               },
             ]}
           >
-            <Input.TextArea className="category__description__input" />
+            <Input.TextArea showCount minLength={10} maxLength={1000} className="category__description__input" />
           </Form.Item>
           <Form.Item>
             <Upload
@@ -212,9 +212,11 @@ const CategoriesPage = () => {
               onChange={(e) => dispatch(uploadImage(e.file.originFileObj))}
             >
               <div className="image-box">
-                {imageLoading ? <LoadingOutlined/> : imageData ? (
+                {imageLoading ? (
+                  <LoadingOutlined />
+                ) : imageData ? (
                   <img
-                  className="upload-image"
+                    className="upload-image"
                     src={getCategoryImage(imageData)}
                     alt="avatar"
                   />

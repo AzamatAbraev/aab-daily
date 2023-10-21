@@ -27,7 +27,7 @@ const DashboardPage = () => {
       let timerId = setTimeout(async () => {
         setLoading(false);
         setCounter(1);
-      }, 500);
+      }, 1000);
 
       return () => {
         clearTimeout(timerId);
