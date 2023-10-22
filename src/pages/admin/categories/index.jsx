@@ -123,7 +123,7 @@ const CategoriesPage = () => {
         }}
         title={() => (
           <Fragment>
-            <Flex align="center" justify="space-between">
+            <Flex className="dashboard-title-container" align="center" justify="space-between">
               <h1>Categories</h1>
               <Button
                 onClick={() => dispatch(showModal(form))}

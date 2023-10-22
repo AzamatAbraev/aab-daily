@@ -129,7 +129,7 @@
   border-radius: 4px !important;
   cursor: pointer !important;
   color: #232536 !important;
-  font-family: 'Sen' !important;
+  font-family: "Sen" !important;
 }
 
 .tab1 {
@@ -137,14 +137,11 @@
   border-bottom-right-radius: 0px !important;
 }
 
-
 .tab2 {
   border-top-left-radius: 0px !important;
   border-bottom-left-radius: 0px !important;
   border-left: none !important;
 }
-
-
 
 .react-tabs__tab--selected {
   background-color: #ffd050 !important;
@@ -242,7 +239,21 @@
 }
 
 @media (max-width: 600px) {
-  .account-form, .form-photo {
+  .account-form,
+  .form-photo {
     width: 100% !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .change-password {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .logout-container {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

@@ -1,15 +1,13 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Slider from "react-slick";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import request from "../../server";
 import { ENDPOINT } from "../../constants";
 import { Link } from "react-router-dom";
 import { longDate } from "../../constants/dateConvert";
 
-import carouselBlog from "../../assets/images/carousel-1.svg";
-
 import "./BlogCarousel.scss";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const BlogCarousel = () => {
   const [blogs, setBlogs] = useState([]);
@@ -30,12 +28,6 @@ const BlogCarousel = () => {
       controller.abort();
     };
   }, []);
-
-  const setDefaultImage = (e) => {
-    if (e.target.src === null) {
-      e.target.src = carouselBlog;
-    }
-  };
 
 
   const settings = {
@@ -81,7 +73,6 @@ const BlogCarousel = () => {
         <div key={blog._id} className="carousel__card card">
           <Link to={`/blog-post/${blog?._id}`} className="card__image">
             <LazyLoadImage
-              onError={() => setDefaultImage()}
               className="blog-carousel-image"
               src={
                 blog?.photo

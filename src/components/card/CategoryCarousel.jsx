@@ -5,7 +5,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import request from "../../server";
 import { ENDPOINT } from "../../constants";
-import icon from "../../assets/images/icon.svg";
 
 
 import "./CategoryCarousel.scss";
@@ -24,10 +23,6 @@ const CategoryCarousel = () => {
     };
     getCategories();
   }, []);
-
-  const addDefaultImage = (e) => {
-    e.target.src = icon;
-  }
 
   const settings = {
     dots: false,
@@ -75,7 +70,6 @@ const CategoryCarousel = () => {
           <div className="category__card">
             <LazyLoadImage
             className="carousel-img"
-              onError={(e) => addDefaultImage(e)}
               src={`${ENDPOINT}upload/${category.photo._id}.${
                 category.photo.name.split(".")[1]
               }`}

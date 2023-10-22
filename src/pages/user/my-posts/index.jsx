@@ -1,4 +1,11 @@
-import { Fragment, useCallback, useContext, useEffect, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  memo,
+} from "react";
 import { Form, Input, Modal, Select, Upload } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -47,6 +54,10 @@ const MyPostsPage = () => {
     }
   }, [search]);
 
+  useEffect(() => {
+    getUserPost();
+  }, [getUserPost]);
+
   const getCategories = useCallback(async () => {
     try {
       let { data } = await request.get("category");
@@ -65,10 +76,7 @@ const MyPostsPage = () => {
       };
     });
     setSortedCategories(options);
-
-    getCategories();
-    getUserPost();
-  }, [categories, getUserPost, getCategories]);
+  }, [categories, getCategories]);
 
   const handleOk = async () => {
     try {
@@ -306,4 +314,6 @@ const MyPostsPage = () => {
   );
 };
 
-export default MyPostsPage;
+const MemoMyPostsPage = memo(MyPostsPage);
+
+export default MemoMyPostsPage;

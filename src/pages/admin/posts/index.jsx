@@ -100,7 +100,7 @@ const UserPostsPage = () => {
         title={() => (
           <Fragment>
             <Flex
-              className="posts-header"
+              className="posts-header dashboard-title-container"
               align="center"
               justify="space-between"
             >
