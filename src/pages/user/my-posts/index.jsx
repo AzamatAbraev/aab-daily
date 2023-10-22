@@ -68,6 +68,10 @@ const MyPostsPage = () => {
   }, []);
 
   useEffect(() => {
+    getCategories();
+  }, [getCategories]);
+
+  useEffect(() => {
     let options;
     options = categories?.map((category) => {
       return {
@@ -76,7 +80,7 @@ const MyPostsPage = () => {
       };
     });
     setSortedCategories(options);
-  }, [categories, getCategories]);
+  }, [categories]);
 
   const handleOk = async () => {
     try {
@@ -87,7 +91,7 @@ const MyPostsPage = () => {
           photo: imageData,
         });
       } else {
-        await request.put(`post/${selected}`, { ...values, photo: imageData });
+        await request.put(`post/${selected}`, values);
       }
       setIsModalOpen(false);
       getUserPost();
@@ -115,9 +119,10 @@ const MyPostsPage = () => {
     deletePost();
   }, []);
 
-  const deletePost = (id) => {
+  const deletePost = async (id) => {
     try {
-      request.delete(`post/${id}`);
+      await request.delete(`post/${id}`);
+      getUserPost();
     } catch (err) {
       toast.error(err);
     }
