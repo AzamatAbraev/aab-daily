@@ -1,27 +1,32 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from "react";
-import { Button, Form, Input, Modal, Select, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Form, Input, Modal, Select, Upload } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { AuthContext } from "../../../context/AuthContext";
 import { ENDPOINT } from "../../../constants";
+import { getCategoryImage } from "../../../utils/getImage";
+import { uploadImage } from "../../../redux/actions/my-posts";
 import Loader from "../../../utils/Loader";
 import request from "../../../server";
 
 import "./style.scss";
 
 const MyPostsPage = () => {
+  const { imageLoading, imageData } = useSelector((state) => state.myPosts);
   const { loading, setLoading } = useContext(AuthContext);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+
   const [category, setCategory] = useState(null);
-  const [photoId, setPhotoId] = useState(null);
   const [categories, setCategories] = useState(null);
   const [sortedCategories, setSortedCategories] = useState([]);
   const [userPost, setUserPost] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
-  const [form] = Form.useForm();
 
   useEffect(() => {
     setLoading(true);
@@ -32,7 +37,6 @@ const MyPostsPage = () => {
       clearTimeout(timerId);
     };
   }, [setLoading]);
-
 
   const getUserPost = useCallback(async () => {
     try {
@@ -66,30 +70,19 @@ const MyPostsPage = () => {
     getUserPost();
   }, [categories, getUserPost, getCategories]);
 
-  const uploadPhoto = useCallback(async (e) => {
-    try {
-      let formData = new FormData();
-      formData.append("file", e.file.originFileObj);
-      console.log(e.file.originFileObj);
-      let { data } = await request.post("upload", formData);
-      setPhotoId(data?._id);
-    } catch (err) {
-      console.log(err.response.data);
-    }
-  }, []);
-
   const handleOk = async () => {
     try {
       let values = await form.validateFields();
       if (selected === null) {
         await request.post("post", {
           ...values,
-          photo: photoId,
+          photo: imageData,
         });
       } else {
-        await request.put(`post/${selected}`, {...values, photo: photoId});
+        await request.put(`post/${selected}`, { ...values, photo: imageData });
       }
       setIsModalOpen(false);
+      getUserPost();
     } catch (err) {
       toast.error(err.response.data);
     }
@@ -273,11 +266,35 @@ const MyPostsPage = () => {
                 <Form.Item label="Upload an image" name="photo">
                   <Upload
                     name="avatar"
-                    className="avatar-uploader"
-                    showUploadList={true}
-                    onChange={uploadPhoto}
+                    listType="picture-card"
+                    className="category-upload"
+                    showUploadList={false}
+                    onChange={(e) =>
+                      dispatch(uploadImage(e.file.originFileObj))
+                    }
                   >
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    <div className="image-box">
+                      {imageLoading ? (
+                        <LoadingOutlined />
+                      ) : imageData ? (
+                        <img
+                          className="upload-image"
+                          src={getCategoryImage(imageData)}
+                          alt="avatar"
+                        />
+                      ) : (
+                        <div>
+                          <PlusOutlined />
+                          <div
+                            style={{
+                              marginTop: 8,
+                            }}
+                          >
+                            Upload
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </Upload>
                 </Form.Item>
               </Form>

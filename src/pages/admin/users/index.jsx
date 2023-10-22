@@ -11,13 +11,11 @@ import {
   Table,
 } from "antd";
 import Search from "antd/es/input/Search";
-import Password from "antd/es/input/Password";
 import { UserOutlined } from "@ant-design/icons";
 
 import { useEffect } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { ENDPOINT, USER_LIMIT } from "../../../constants";
 import {
   changeUsersPage,
@@ -26,7 +24,7 @@ import {
   editUser,
   getUsers,
   searchUsers,
-  sendCategory,
+  sendUsers,
   showModal,
 } from "../../../redux/actions/user";
 
@@ -53,7 +51,7 @@ const UsersPage = () => {
 
   const handleOk = async () => {
     const values = await form.validateFields();
-    dispatch(sendCategory({ values, selected, activePage, search, form }));
+    dispatch(sendUsers({ values, selected, activePage, search, form }));
   };
 
   const closeModal = () => {
@@ -220,7 +218,10 @@ const UsersPage = () => {
           >
             <Input />
           </Form.Item>
-          <Alert type="error" message="Editing password is not allowed !"/>
+
+          {selected === null ? null : (
+            <Alert type="error" message="Editing password is not allowed !" />
+          )}
 
           {selected === null ? (
             <Fragment>

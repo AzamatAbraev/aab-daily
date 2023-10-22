@@ -36,6 +36,8 @@ const BlogPostPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  console.log(post);
+
   return (
     <Fragment>
       {loading ? (
@@ -60,7 +62,7 @@ const BlogPostPage = () => {
               <div className="blog-post__subheader">
                 <img
                   className="blog-post__main__image"
-                  src={`${ENDPOINT}/upload/${post?._id}.jpg`}
+                  src={`${ENDPOINT}/upload/${post?.user._id}.jpg`}
                   alt=""
                 />
                 <div className="blog-post__author">

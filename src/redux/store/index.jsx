@@ -8,10 +8,12 @@ import languageReducer from "../reducers/language";
 import categoryPostsReducer from "../reducers/categoryPosts";
 import postsReducer from "../reducers/post";
 import userReducer from "../reducers/user";
+import myPostsReducer from "../reducers/my-posts";
 
 const rootReducer = combineReducers({
   category: categoryReducer,
   post: postsReducer,
+  myPosts: myPostsReducer,
   user: userReducer,
   categoryPosts: categoryPostsReducer,
   language: languageReducer,

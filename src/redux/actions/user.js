@@ -42,7 +42,7 @@ export const searchUsers = (search) => (dispatch) => {
   dispatch(getUsers(1, search));
 };
 
-export const sendCategory =
+export const sendUsers =
   ({ values, selected, activePage, search, form }) =>
   async (dispatch) => {
     try {
