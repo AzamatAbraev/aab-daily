@@ -1,12 +1,14 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { Button, Form, Input, Modal, Upload } from "antd";
-import { toast } from "react-toastify";
-import { UploadOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { toast } from "react-toastify";
+import { Form, Input, Modal, Upload } from "antd";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 import { AuthContext } from "../../context/AuthContext";
-import { ENDPOINT } from "../../constants";
+import { uploadImage } from "../../redux/actions/my-posts";
+import { getCategoryImage } from "../../utils/getImage";
 import Loader from "../../utils/Loader";
 import request from "../../server";
 
@@ -16,12 +18,13 @@ const AccountPage = () => {
   const { logout, setLoading, loading, user, getUser } =
     useContext(AuthContext);
   const navigate = useNavigate();
-  const [photoId, setPhotoId] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [password, setPassword] = useState(false);
   const [form] = Form.useForm();
   const { pathname } = useLocation();
-  const [photoExtension, setPhotoExtension] = useState("jpg");
+
+  const dispatch = useDispatch();
+  const { imageData, imageLoading } = useSelector((state) => state.myPosts);
 
   useEffect(() => {
     setLoading(true);
@@ -37,23 +40,11 @@ const AccountPage = () => {
   useEffect(() => {
     form.setFieldsValue(user);
     setPhoto(user?.photo);
-  }, [user, form]);
-
-  const uploadPhoto = async (e) => {
-    try {
-      setPhotoExtension(e.file.name.split(".")[1]);
-      let formData = new FormData();
-      formData.append("file", e.file.originFileObj);
-      let { data } = await request.post("upload", formData);
-      setPhotoId(data?._id);
-    } catch (err) {
-      console.log(err.response.data);
-    }
-  };
+  }, [user, form, imageData]);
 
   const onFinish = async (values) => {
     try {
-      await request.put("auth/details", { ...values, photo: photoId });
+      await request.put("auth/details", { ...values, photo: imageData });
       toast.success("Saved successfully");
       navigate("/");
       getUser();
@@ -79,7 +70,6 @@ const AccountPage = () => {
       toast.success("Password changed");
       setPassword(false);
     } catch (err) {
-      console.log(err.response);
       toast.error(err.response.data);
     }
   };
@@ -112,6 +102,16 @@ const AccountPage = () => {
                   onFinish={onFinish}
                   autoComplete="off"
                 >
+                  {/* <div
+                    style={{ padding: "10px", background: "grey" }}
+                    className="form-image"
+                  >
+                    <img
+                      style={{ width: "100%" }}
+                      src={`${ENDPOINT}upload/${user?.photo}.svg`}
+                      alt="Profile picture"
+                    />
+                  </div> */}
                   <Form.Item
                     label="First name"
                     name="first_name"
@@ -250,18 +250,7 @@ const AccountPage = () => {
               <TabPanel>
                 <h1 className="login__title">Profile Picture</h1>
                 <div className="form-photo">
-                  <div className="upload-image">
-                    <img
-                      src={`${ENDPOINT}upload/${user?.photo}.${photoExtension}`}
-                      alt={user?.name}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </div>
-                  <Upload
+                  {/* <Upload
                     name="avatar"
                     className="form-uploader"
                     showUploadList={true}
@@ -273,6 +262,38 @@ const AccountPage = () => {
                     >
                       Upload an image
                     </Button>
+                  </Upload> */}
+                  <Upload
+                    name="avatar"
+                    listType="picture-card"
+                    className="category-upload"
+                    showUploadList={false}
+                    onChange={(e) =>
+                      dispatch(uploadImage(e.file.originFileObj))
+                    }
+                  >
+                    <div className="image-box">
+                      {imageLoading ? (
+                        <LoadingOutlined />
+                      ) : imageData ? (
+                        <img
+                          className="upload-image"
+                          src={getCategoryImage(imageData)}
+                          alt="avatar"
+                        />
+                      ) : (
+                        <div>
+                          <PlusOutlined />
+                          <div
+                            style={{
+                              marginTop: 8,
+                            }}
+                          >
+                            Upload
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </Upload>
                 </div>
               </TabPanel>
