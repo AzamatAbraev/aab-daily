@@ -106,7 +106,7 @@ const AllPostsPage = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (data) => <p>{data.slice(0, 50)}...</p>,
+      render: (data) => <p className="table-info">{data.slice(0, 50)}...</p>,
     },
     {
       title: "Posted by",
@@ -114,7 +114,7 @@ const AllPostsPage = () => {
       key: "last_name",
       render: (data, category) => {
         return (
-          <p>
+          <p className="table-info">
             {category?.user?.first_name} {category?.user?.last_name}
           </p>
         );
