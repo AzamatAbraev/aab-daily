@@ -76,7 +76,7 @@ const HomePage = () => {
             style={{
               backgroundImage: latestPost?.photo
                 ? `url(${ENDPOINT}upload/${latestPost?.photo._id}.${
-                    latestPost?.photo?.name.split(".")[1]
+                    latestPost?.photo?.name?.split(".")[1]
                   })`
                 : "url(https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled.png)",
               backgroundSize: "cover",
@@ -86,21 +86,21 @@ const HomePage = () => {
           >
             <div className="container home__container">
               <h3 className="home__subtitle">
-                Posted on <span>{latestPost.category?.name}</span>
+                Posted on <span>{latestPost?.category?.name}</span>
               </h3>
               <h1 className="home__title">{latestPost?.title}</h1>
               <div className="home__details">
                 <p className="home__author">
                   By{" "}
                   <span>
-                    {latestPost.user?.first_name} {latestPost.user?.last_name}
+                    {latestPost?.user?.first_name} {latestPost?.user?.last_name}
                   </span>
                 </p>
                 <p className="home__date">{date}</p>
               </div>
               <p className="home__desc">{latestPost?.description}</p>
               <Link
-                to={`/blog-post/${latestPost._id}`}
+                to={`/blog-post/${latestPost?._id}`}
                 className="home__posts__btn"
               >
                 Read More

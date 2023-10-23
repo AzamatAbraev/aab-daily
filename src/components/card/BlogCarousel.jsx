@@ -70,13 +70,13 @@ const BlogCarousel = () => {
   return (
     <Slider {...settings}>
       {blogs.map((blog) => (
-        <div key={blog._id} className="carousel__card card">
+        <div key={blog?._id} className="carousel__card card">
           <Link to={`/blog-post/${blog?._id}`} className="card__image">
             <LazyLoadImage
               className="blog-carousel-image"
               src={
                 blog?.photo
-                  ? `${ENDPOINT}/upload/${blog?.photo._id}.${`${
+                  ? `${ENDPOINT}/upload/${blog?.photo?._id}.${`${
                       blog?.photo.name.split(".")[1]
                     }`}`
                   : "https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
@@ -88,14 +88,14 @@ const BlogCarousel = () => {
               <p>
                 By
                 <span>
-                  {blog?.user.first_name} {blog?.user.last_name}
+                  {blog?.user?.first_name} {blog?.user?.last_name}
                 </span>
               </p>
-              <p>{longDate(blog.createdAt)}</p>
+              <p>{longDate(blog?.createdAt)}</p>
             </div>
-            <h3 className="card__title">{blog.title}</h3>
-            <p className="card__desc">{blog.description}</p>
-            <Link to={`/blog-post/${blog._id}`} className="read-more-btn">
+            <h3 className="card__title">{blog?.title}</h3>
+            <p className="card__desc">{blog?.description}</p>
+            <Link to={`/blog-post/${blog?._id}`} className="read-more-btn">
               Read More
             </Link>
           </div>

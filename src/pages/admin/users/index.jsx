@@ -65,7 +65,7 @@ const UsersPage = () => {
       key: "photo",
       render: (data) =>
         data ? (
-          <Image src={`${ENDPOINT}upload/${data.split("_")[1]}`} />
+          <Image src={`${ENDPOINT}upload/${data?.split("_")[1]}`} />
         ) : (
           <UserOutlined />
         ),
@@ -91,7 +91,7 @@ const UsersPage = () => {
       title: "Account created",
       dataIndex: "createdAt",
       key: "description",
-      render: (data) => <p className="accountCreated">{data.split("T")[0]}</p>,
+      render: (data) => <p className="accountCreated">{data?.split("T")[0]}</p>,
     },
     {
       title: "Action",

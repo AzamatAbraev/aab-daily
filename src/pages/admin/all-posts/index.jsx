@@ -92,7 +92,7 @@ const AllPostsPage = () => {
             height={50}
             width={50}
             alt=""
-            src={`${ENDPOINT}upload/${data?._id}.${data?.name.split(".")[1]}`}
+            src={`${ENDPOINT}upload/${data?._id}.${data?.name?.split(".")[1]}`}
           />
         );
       },
@@ -115,7 +115,7 @@ const AllPostsPage = () => {
       render: (data, category) => {
         return (
           <p>
-            {category?.user.first_name} {category?.user.last_name}
+            {category?.user?.first_name} {category?.user?.last_name}
           </p>
         );
       },
