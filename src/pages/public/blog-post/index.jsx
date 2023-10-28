@@ -12,8 +12,10 @@ import "./style.scss";
 
 const BlogPostPage = () => {
   const { loading, setLoading } = useContext(AuthContext);
-  const [post, setPost] = useState();
+  const { pathname } = useLocation();
   const { blogId } = useParams();
+
+  const [post, setPost] = useState();
 
   useEffect(() => {
     const getPost = async () => {
@@ -30,13 +32,10 @@ const BlogPostPage = () => {
     getPost();
   }, [blogId, setLoading]);
 
-  const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
-  console.log(post);
 
   return (
     <Fragment>
